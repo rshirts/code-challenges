@@ -16,7 +16,11 @@ const requestURL =
 const dictionary = {};
 
 //This is the mapping of all cubes and their values
-const cubesValues = [['Z',,], ['O','O'], ['O','O']];
+// const cubesValues = [['Z',,], ['O','O'], ['O','O']];
+const cubesValues = [['O','O'], ['Z',,], ['O','O']];
+// const cubesValues = [['5','4',], ['3','2'], ['1','O']];
+// const cubesValues = [ ['1','2'], ['3',,]];
+// const cubesValues = [ ['1','2']];
 
 // Populate the dictionary from default source can supply another if needed.
 const initialize = async (textURL = requestURL) => {
@@ -44,9 +48,9 @@ const initialize = async (textURL = requestURL) => {
     },
     (err) => {
       if (err) {
-        console.log('dictionary was not populated');
+        console.log('Dictionary was not populated');
       } else {
-        console.log('Dictionary population complete');
+        console.log('Dictionary population completed');
       }
     }
   );
@@ -57,7 +61,10 @@ const initialize = async (textURL = requestURL) => {
 // using an iife just so I can use async/await
 (async () => {
   await initialize();
-  let myCube = new Cubes(cubesValues);
-  myCube.getWordArr();
-  // console.log(dictionary['zyzzyvas']);
+  // let myCubes = new Cubes(cubesValues);
+  // let wordArr = [];
+  // do {
+  //   wordArr = myCubes.getWordArr();
+  // } while(wordArr);
+  // console.log(dictionary['zyzzyvasss']);
 })();

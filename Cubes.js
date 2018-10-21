@@ -1,22 +1,24 @@
 module.exports = class Cubes {
   constructor(cubes) {
     this.cubes = cubes;
-    this.numCubes = cubes.length;
-    //since examples of each cube in cubes array all had the same length
-    // going to assume cubes look alike (same ammout of sides)
-    this.numSides = cubes[0].length;
-    this.cubeCounter = this.createCubeCounter();
-    console.log(this.cubeCounter);
+    this.numCubes = cubes.length - 1;
+    //although all the cubes had the same number of sides
+    // were going to allow for cubes of different number of faces
+    this.cubeFaceCounter = this.createFaceCubeCounter();
+    //just storing this so I dont have to keep recaluclating the number of size
+    // each block has
+    this.cubeFaceResetValues = [...this.cubeFaceCounter];
+    console.log(this.cubeFaceCounter);
   }
 
   //This creates the array which we will use as our base(sides) counter to
   // iterate through all the possible instances of a word.
-  createCubeCounter() {
+  createFaceCubeCounter() {
     let tempCounter = [];
-    for (let i = 0; i < this.cubes.length; i++) {
-      tempCounter.push([
-        this.numSides
-      ]);
+    for (let cube of this.cubes) {
+      tempCounter.push(
+        cube.length - 1
+      );
     }
     return tempCounter;
   }
@@ -25,20 +27,60 @@ module.exports = class Cubes {
   getWordArr() {
     // let letter = numCubes;
     let tempWordArr = [];
-    for (let cube = (this.numCubes - 1); cube >= 0; cube--) {
-      let tempCube = this.cubes[cube];
-      let faceToCheck = (this.cubeCounter[cube][0] - 1);
+    //iterate through each cube and get a letter.
+    //using traditional for loop since we are iterating over multiple arrays
+    for (let cube = (this.numCubes); cube >= 0; cube--) {
+      //*** Although I could refactor this to be one line I'm leaving expanded for readablity
+      let tempCube = [...this.cubes[cube]];
+      let faceToCheck = (this.cubeFaceCounter[cube]);
       let letter = tempCube[faceToCheck];
+      //incase there is no letter use a space
       (!letter) ? letter = ' ' : null;
       //could use pop but figure'd just keep the word in the same order.
       tempWordArr.unshift(letter);
     }
     console.log(tempWordArr);
-    return tempWordArr;
+    // After we get the word decrament the values
+    // returns true we have more words
+    // returns false we have checked all words
+    return (this.decramentFaceCounter(this.numCubes))
+      ? tempWordArr
+      : false;
+    // if (this.decramentFaceCounter(this.numCubes)) {
+    //   return tempWordArr;
+    // }
+    // else {
+    //   return false;
+    // }
   }
 
   //decrament the counter return -1 when no more words left.
-  decramentCounter () {
+  //Param: the block we are currently decramenting.
+  decramentFaceCounter(blockIndex) {
+    let valueToCheck = this.cubeFaceCounter[blockIndex];
+    let moreWords = true;
 
+    //Decrament the block
+    valueToCheck -= 1;
+
+    //last case no more words
+    if (blockIndex == 0 && valueToCheck == -1 ) {
+      return false;
+    }
+
+    //most used case the counter needs to be decramented
+    if (this.cubeFaceCounter[0] >= 0 && valueToCheck >= 0) {
+      this.cubeFaceCounter[blockIndex] = valueToCheck;
+      return true;
+    }
+    //second case reset reset the counter and decrament the previous counter
+    // if it is less than 0 and not the last block reset it and decrament the next block
+    // call decramentCounter with (blockIndex - 1)
+    if (this.cubeFaceCounter[0] >= 0 && valueToCheck < 0) {
+      // reset the valueToCheck to it's number of faces.
+      this.cubeFaceCounter[blockIndex] = this.cubeFaceResetValues[blockIndex];
+      //recursivly call the function to decrament the next block.
+      return(this.decramentFaceCounter(blockIndex -1));
+    }
   }
 };
