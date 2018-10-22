@@ -2,13 +2,14 @@ module.exports = class Cubes {
   constructor(cubes) {
     this.cubes = cubes;
     this.numCubes = cubes.length - 1;
+    this.StillMoreWords = true;
     //although all the cubes had the same number of sides
     // were going to allow for cubes of different number of faces
     this.cubeFaceCounter = this.createFaceCubeCounter();
     //just storing this so I dont have to keep recaluclating the number of size
     // each block has
     this.cubeFaceResetValues = [...this.cubeFaceCounter];
-    console.log(this.cubeFaceCounter);
+    // console.log(this.cubeFaceCounter);
   }
 
   //This creates the array which we will use as our base(sides) counter to
@@ -24,7 +25,7 @@ module.exports = class Cubes {
   }
 
   //return a word and decrament counter
-  getWordArr() {
+  getFacesArr() {
     // let letter = numCubes;
     let tempWordArr = [];
     //iterate through each cube and get a letter.
@@ -35,30 +36,30 @@ module.exports = class Cubes {
       let faceToCheck = (this.cubeFaceCounter[cube]);
       let letter = tempCube[faceToCheck];
       //incase there is no letter use a space
-      (!letter) ? letter = ' ' : null;
+      (!letter || letter === '') ? letter = ' ' : null;
       //could use pop but figure'd just keep the word in the same order.
       tempWordArr.unshift(letter);
     }
-    console.log(tempWordArr);
+    // console.log(tempWordArr);
     // After we get the word decrament the values
     // returns true we have more words
     // returns false we have checked all words
-    return (this.decramentFaceCounter(this.numCubes))
-      ? tempWordArr
-      : false;
-    // if (this.decramentFaceCounter(this.numCubes)) {
-    //   return tempWordArr;
-    // }
-    // else {
-    //   return false;
-    // }
+    if (!this.StillMoreWords) {
+      console.log('All Words are checked');
+      return false;
+    }
+    if(this.decramentFaceCounter(this.numCubes)) {
+      return tempWordArr;
+    } else {
+      this.StillMoreWords = false;
+      return tempWordArr;
+    }
   }
 
   //decrament the counter return -1 when no more words left.
   //Param: the block we are currently decramenting.
   decramentFaceCounter(blockIndex) {
     let valueToCheck = this.cubeFaceCounter[blockIndex];
-    let moreWords = true;
 
     //Decrament the block
     valueToCheck -= 1;
@@ -67,7 +68,6 @@ module.exports = class Cubes {
     if (blockIndex == 0 && valueToCheck == -1 ) {
       return false;
     }
-
     //most used case the counter needs to be decramented
     if (this.cubeFaceCounter[0] >= 0 && valueToCheck >= 0) {
       this.cubeFaceCounter[blockIndex] = valueToCheck;

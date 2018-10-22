@@ -6,7 +6,7 @@ const rp = require('request-promise');
 // website found at https://github.com/caolan/async/blob/v1.5.2/README.md#each
 const as = require('async.js');
 
-const Cubes = require('./Cubes');
+const ValidateBlocks = require('./ValidateBlocks');
 
 // The url we will be using to request the dictionary information.
 const requestURL =
@@ -17,10 +17,19 @@ const dictionary = {};
 
 //This is the mapping of all cubes and their values
 // const cubesValues = [['Z',,], ['O','O'], ['O','O']];
-const cubesValues = [['O','O'], ['Z',,], ['O','O']];
-// const cubesValues = [['5','4',], ['3','2'], ['1','O']];
+// const cubesValues = [['O','O','O','O','O','O'], ['Z','Z','Z','Z',,], ['O','O','O','O','O','O']];
+// const cubesValues = [['A','D'], ['B','E',], ['C','F']];
+// const cubesValues = [['A'], ['B'], ['']];
+// const cubesValues = [['n'], ['o'], ['b'], ['']];
+
+// const cubesValues = [['5','4',], ['3','2'], ['1','']];
 // const cubesValues = [ ['1','2'], ['3',,]];
 // const cubesValues = [ ['1','2']];
+
+const cubesValues = [['H','L','S','J','U','B'],
+['O','O','N','O','S','O'],
+['M','V','O','Y','A','O'],
+['E','E','W','' ,'' ,'' ]]
 
 // Populate the dictionary from default source can supply another if needed.
 const initialize = async (textURL = requestURL) => {
@@ -61,10 +70,7 @@ const initialize = async (textURL = requestURL) => {
 // using an iife just so I can use async/await
 (async () => {
   await initialize();
-  // let myCubes = new Cubes(cubesValues);
-  // let wordArr = [];
-  // do {
-  //   wordArr = myCubes.getWordArr();
-  // } while(wordArr);
+  let words = new ValidateBlocks(dictionary, cubesValues)
   // console.log(dictionary['zyzzyvasss']);
+  words.print();
 })();
