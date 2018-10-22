@@ -6,6 +6,7 @@ const rp = require('request-promise');
 // website found at https://github.com/caolan/async/blob/v1.5.2/README.md#each
 const as = require('async.js');
 
+//This is in charge of validating the words given.
 const ValidateBlocks = require('./ValidateBlocks');
 
 // The url we will be using to request the dictionary information.
@@ -15,17 +16,7 @@ const requestURL =
 // This contains all the words we will test our guesses against.
 const dictionary = {};
 
-//This is the mapping of all cubes and their values
-// const cubesValues = [['Z',,], ['O','O'], ['O','O']];
-// const cubesValues = [['O','O','O','O','O','O'], ['Z','Z','Z','Z',,], ['O','O','O','O','O','O']];
-// const cubesValues = [['A','D'], ['B','E',], ['C','F']];
-// const cubesValues = [['A'], ['B'], ['']];
-// const cubesValues = [['n'], ['o'], ['b'], ['']];
-
-// const cubesValues = [['5','4',], ['3','2'], ['1','']];
-// const cubesValues = [ ['1','2'], ['3',,]];
-// const cubesValues = [ ['1','2']];
-
+//The cubesValues and sides.
 const cubesValues = [['H','L','S','J','U','B'],
 ['O','O','N','O','S','O'],
 ['M','V','O','Y','A','O'],
@@ -65,12 +56,13 @@ const initialize = async (textURL = requestURL) => {
   );
 };
 
-
-
+// This is kind of like Main***
 // using an iife just so I can use async/await
 (async () => {
+  //getting the library which is space delimited words.
   await initialize();
+  //words will contain the validated library.
   let words = new ValidateBlocks(dictionary, cubesValues)
-  // console.log(dictionary['zyzzyvasss']);
+  //Print words found.
   words.print();
 })();

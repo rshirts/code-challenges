@@ -1,5 +1,11 @@
+// This class is in charge of taking the cubes and generating words to be checked.
+// The constructor takes a multidimensional array of characters.
 module.exports = class Cubes {
   constructor(cubes) {
+    if (!cubes) {
+      console.log('Cubes constructor needs to be given a multidimensional array of cubes and values')
+      process.exit(0);
+    }
     this.cubes = cubes;
     this.numCubes = cubes.length - 1;
     this.StillMoreWords = true;
@@ -9,7 +15,6 @@ module.exports = class Cubes {
     //just storing this so I dont have to keep recaluclating the number of size
     // each block has
     this.cubeFaceResetValues = [...this.cubeFaceCounter];
-    // console.log(this.cubeFaceCounter);
   }
 
   //This creates the array which we will use as our base(sides) counter to
@@ -26,7 +31,6 @@ module.exports = class Cubes {
 
   //return a word and decrament counter
   getFacesArr() {
-    // let letter = numCubes;
     let tempWordArr = [];
     //iterate through each cube and get a letter.
     //using traditional for loop since we are iterating over multiple arrays
@@ -40,7 +44,6 @@ module.exports = class Cubes {
       //could use pop but figure'd just keep the word in the same order.
       tempWordArr.unshift(letter);
     }
-    // console.log(tempWordArr);
     // After we get the word decrament the values
     // returns true we have more words
     // returns false we have checked all words

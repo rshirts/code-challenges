@@ -1,11 +1,24 @@
 //This class takes in a dictionary and an array of blocks and finds all valid words.
+// Constructor variables
+// first: are a space delimited list of words.
+// second: a multidimensional array passed to Cubes class.
 const Cubes = require('./Cubes');
 
 module.exports = class ValidateBlocks {
   constructor (dictionary, cubesArr) {
+    if (!dictionary) {
+      console.log('ValidateBlocks needs a space delimited text file given to constructor');
+      process.exit(0);
+    }
+    if (!cubesArr) {
+      console.log('ValidateBlocks needs a multidimensional array of characters given to the constructor')
+      process.exit(0);
+    }
     this.dictionary = dictionary;
     this.Cubes = new Cubes(cubesArr);
+    //This is where all valid words are stored
     this.validWordsLibrary = {};
+    //This will find try all word values from a given list of letters(cube faces)
     this.validateBlocks();
   }
 
@@ -28,18 +41,17 @@ module.exports = class ValidateBlocks {
   //Using a standard algorithim for permutations with backtracking
   addWordPermutations(wordArr, lIndex, rIndex) {
     if (lIndex === rIndex) {
-      // console.log(wordArr.join('').toLowerCase());
       this.addWordToLibraryIfValid(wordArr.join('').toLowerCase())
     } else {
       for (let i = lIndex; i <= rIndex; i++) {
         //choose
-          this.swap(wordArr, lIndex, i);
+        this.swap(wordArr, lIndex, i);
         //explore
-          if (lIndex !== rIndex) {
-            this.addWordPermutations([... wordArr], lIndex+1, rIndex);
-          }
+        if (lIndex !== rIndex) {
+          this.addWordPermutations([... wordArr], lIndex+1, rIndex);
+        }
         //un-choose
-          this.swap(wordArr, i, lIndex);
+        this.swap(wordArr, i, lIndex);
       }
     }
   }
